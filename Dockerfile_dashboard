@@ -1,0 +1,24 @@
+# pull official base image
+FROM node:14
+
+# set the working direction
+WORKDIR /atomicdex_markets
+
+# add `/atomicdex_markets/node_modules/.bin` to $PATH
+ENV PATH /atomicdex_markets/node_modules/.bin:$PATH
+
+# install atomicdex_markets dependencies
+COPY ./atomicdex_markets/package.json ./
+
+COPY ./atomicdex_markets/yarn.lock ./
+
+# rebuild node-sass
+RUN yarn add node-sass
+
+RUN yarn
+
+# add atomicdex_markets
+COPY ./atomicdex_markets ./
+
+# start atomicdex_markets
+CMD ["yarn", "start"]

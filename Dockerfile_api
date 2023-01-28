@@ -1,0 +1,9 @@
+FROM python:3.10
+
+WORKDIR /dexstats_sqlite_py
+
+COPY ./dexstats_sqlite_py /dexstats_sqlite_py
+
+RUN pip3 install --upgrade -r /dexstats_sqlite_py/requirements.txt
+
+CMD python3 /dexstats_sqlite_py/main.py

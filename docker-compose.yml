@@ -1,0 +1,66 @@
+version: "3.7"
+services:
+
+  mm2:
+    env_file: .env
+    restart: always
+    build:
+      context: mm2_docker
+      dockerfile: Dockerfile
+    volumes:
+      - ./mm2_docker:/mm2_docker
+    ports:
+      - ${MM2_PORT}:${MM2_PORT}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+
+  dashboard:
+    env_file: .env
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile_dashboard
+    volumes:
+      - ./atomicdex_markets:/atomicdex_markets
+    ports:
+      - 3000:3000
+    depends_on:
+      - mm2
+      - fastapi
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+
+  fastapi:
+    env_file: .env
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile_api
+    volumes:
+      - ./dexstats_sqlite_py:/dexstats_sqlite_py
+    ports:
+      - 8080:8080
+    depends_on:
+      - mm2
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
+
+  db:
+    env_file: .env
+    restart: always
+    image: timescale/timescaledb-ha:pg14-latest
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    ports: 
+      - 5432:5432
