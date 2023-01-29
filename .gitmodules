@@ -1,11 +1,11 @@
 [submodule "atomicdex_markets"]
 	path = atomicdex_markets
 	url = https://github.com/komodoplatform/atomicdex_markets
-	branch = main
+	branch = dockerized
 [submodule "dexstats_sqlite_py"]
 	path = dexstats_sqlite_py
 	url = https://github.com/komodoplatform/dexstats_sqlite_py
-	branch = markets_atomicdex_update
+	branch = dockerised
 [submodule "mm2_docker"]
 	path = mm2_docker
 	url = https://github.com/smk762/mm2_docker
